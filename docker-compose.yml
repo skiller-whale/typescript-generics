@@ -1,0 +1,11 @@
+version: '3.7'
+services:
+  typescript:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./attendance_id:/session/attendance_id
+      - ./exercises:/session/exercises
+    stdin_open: true
+    tty: true
