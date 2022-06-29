@@ -1,7 +1,9 @@
-FROM node:16-alpine
+FROM node:16-alpine3.16
 
 RUN apk add --no-cache python3 \
   py3-pip
+
+RUN pip install requests
 
 RUN npm install -g typescript
 

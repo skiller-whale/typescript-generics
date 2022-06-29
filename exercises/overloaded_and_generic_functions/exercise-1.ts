@@ -34,8 +34,8 @@ const tea: "Tea" = makeHotDrink("Tea Leaves", "Water")
 const hotChocolate: "Hot Chocolate" = makeHotDrink("Cocoa Powder", "Milk")
 
 // these calls to `makeHotDrink` should raise an error
-const test1: never = makeHotDrink("Tea Leaves", "Milk")
-const test2: never = makeHotDrink("Cocoa Powder", "Water")
+const test1 = makeHotDrink("Tea Leaves", "Milk")
+const test2 = makeHotDrink("Cocoa Powder", "Water")
 
 function addFlavouring(hotDrink: HotDrink, flavouring: Flavouring): FlavouredHotDrink {
   if (flavouring === "Sugar") {
@@ -55,4 +55,4 @@ const sweetTea: "Sweet Tea" = addFlavouring(tea, "Sugar")
 const sweetHotChocolate: "Sweet Hot Chocolate" = addFlavouring(hotChocolate, "Sugar")
 
 // this call to `addFlavouring` should raise an error
-const test3: never = addFlavouring(hotChocolate, "Milk")
+const test3 = addFlavouring(hotChocolate, "Milk")
