@@ -33,9 +33,9 @@ function addFlavouring(hotDrink: HotDrink, flavouring: Flavouring): FlavouredHot
 }
 
 // these assignments should all work
-const milkyCoffee: "Milky Coffee" = addFlavouring(coffee, "Milk")
-const sweetCoffee: "Sweet Coffee" = addFlavouring(coffee, "Sugar")
-const milkyTea: "Milky Tea" = addFlavouring(tea, "Milk")
-const sweetTea: "Sweet Tea" = addFlavouring(tea, "Sugar")
-const sweetHotChocolate: "Sweet Hot Chocolate" = addFlavouring(hotChocolate, "Sugar")
-const milkyHotChocolate: never = addFlavouring(hotChocolate, "Milk")
+const milkyCoffee: "Milky Coffee" = addFlavouring("Coffee", "Milk")
+const sweetCoffee: "Sweet Coffee" = addFlavouring("Coffee", "Sugar")
+const milkyTea: "Milky Tea" = addFlavouring("Tea", "Milk")
+const sweetTea: "Sweet Tea" = addFlavouring("Tea", "Sugar")
+const sweetHotChocolate: "Sweet Hot Chocolate" = addFlavouring("Hot Chocolate", "Sugar")
+const milkyHotChocolate: never = addFlavouring("Hot Chocolate", "Milk")
