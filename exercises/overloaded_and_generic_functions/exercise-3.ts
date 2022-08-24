@@ -1,5 +1,3 @@
-export default {} // empty export to ensure the compiler treats this file as a module
-
 const get = (obj: Record<string, unknown>, key: string): unknown =>
   obj[key]
 

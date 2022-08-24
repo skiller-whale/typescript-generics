@@ -1,5 +1,3 @@
-export default {} // empty export to ensure the compiler treats this file as a module
-
 type BaseIngredient = "Coffee Beans" | "Tea Leaves" | "Cocoa Powder"
 
 type SecondaryIngredient = "Water" | "Milk"

@@ -1,35 +1,44 @@
 // @ts-nocheck
-export default {} // empty export to ensure the compiler treats this file as a module
+type Failable<T> =
+  | { ok: true, result: T }
+  | { ok: false, result: Error }
 
-// given an array of values, return an array of the most frequent values
-const mode = (values: unknown[]): unknown[] => {
-  const valuesWithTotals = addTotals(values)
-  const max = Math.max(...valuesWithTotals.map(second))
-  return valuesWithTotals
-    .filter((x) => second(x) === max)
-    .map(first)
+function safely(callback: (...args: any[]) => unknown, ...args: any[]): Failable<unknown> {
+  try {
+    return { ok: true, result: callback(...args) }
+  } catch (error) {
+    return error instanceof Error
+      ? { ok: false, result: error }
+      : { ok: false, result: new Error("something went wrong") }
+  }
 }
 
-// given an array of values, return an array of tuples, where each tuple
-// contains a value from the array, followed by the total number of
-// occurrences of that value
-const addTotals = (values: unknown[]): [unknown, number][] =>
-  values
-    .filter((x, i) => values.indexOf(x) === i)
-    .map((x) => [x, calculateTotal(values, x)])
+// don't edit the code below here
+type Foo = {
+  a: number
+  b: string
+}
 
-// count the total number of occurrences of a value in an array
-const calculateTotal = (values: unknown[], value: unknown): number =>
-  values.reduce((acc, current) => (current === value ? acc + 1 : acc), 0)
+function parseAsFoo(json: string): Foo {
+  const value = JSON.parse(json)
+  if (typeof value !== "object" || value === null || typeof value.a !== "number" || typeof value.b !== "string") {
+    throw new Error("not a Foo")
+  }
+  return value
+}
 
-// get the first element from a tuple
-const first = ([t]: [unknown, unknown]): unknown => t
+async function queryFoo(url: string, method: "GET" | "POST") {
+  const response = await fetch(url, { method })
+  const json = await response.text()
+  return parseAsFoo(json)
+}
 
-// get the second element from a tuple
-const second = ([, u]: [unknown, unknown]): unknown => u
+// these assignments should all work
+const test1: Failable<Foo> = safely(() => parseAsFoo('{ a: 42, b: "hello" } '))
+const test2: Failable<Foo> = safely(parseAsFoo, '{ a: 42, b: "hello" } ')
+const test3: Failable<Promise<Foo>> = safely(queryFoo, "/api/foo/123", "GET")
 
-const test1 = mode([1, 1, 2, 2, 2, 2, 3, 3, 4, 4, 4, 4, 5, 6, 6])
-const test2 = mode(["a", "a", "b", "b", "b", "c", "d", "d", "d"])
-
-console.log(test1) // [2, 4]
-console.log(test2) // ['b', 'd']
+// these assignments should raise an error
+const test4: Failable<number> = safely(() => parseAsFoo('{ a: 42, b: "hello" } '))
+const test5 = safely(parseAsFoo)
+const test6 = safely(queryFoo, "/api/foo/123")
