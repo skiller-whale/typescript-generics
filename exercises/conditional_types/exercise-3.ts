@@ -1,11 +1,11 @@
 // @ts-nocheck
 
 // part 1
-type First<T> = T
+type FirstArg<T> = T
 
-const test1: First<(one: string) => string> = "okay"
+const test1: FirstArg<(one: string) => string> = "okay"
 
-const test2: First<(one: number) => number> = 42
+const test2: FirstArg<(one: number, two: string) => number> = 42
 
 // part 2
 type AllArgs<T> = T
