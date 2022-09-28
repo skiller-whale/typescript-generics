@@ -1,47 +1,43 @@
-// @ts-nocheck
+export default {} // empty export to ensure the compiler treats this file as a module
 
-type Contact = {
-  name: {
-    firstName: string
-    lastName: string
-  }
-  emailAddresses: string[]
-  phoneNumbers: number[]
+type Skiller = {
+  id: number
+  name: string
+  sessionsAttended: number
 }
 
-// part 1
-type Formatter<T> = T
-
-// this function should compile without errors
-const formatContact = (contact: Contact, contactFormatter: Formatter<Contact>): string => {
-  let output = `Name: ${contactFormatter.formatName(contact.name)}\n`
-  output += `Email addresses: ${contactFormatter.formatEmailAddresses(contact.emailAddresses)}\n`
-  output += `Phone numbers: ${contactFormatter.formatPhoneNumbers(contact.phoneNumbers)}`
-  return output
+type Whale = {
+  id: string
+  name: string
+  species: string
 }
 
-// part 2
-type DeepReadonly<T> = T
+type At<T, U, K extends keyof T | keyof U>
+  // if K is a key of both T and U, intersect the types
+  = K extends keyof U ? K extends keyof T ? U[K] & T[K]
+  // if K is just a key of U, use that
+  : U[K]
+  // if K is just a key of T, use that
+  : K extends keyof T ? T[K]
+  // otherwise nothing (impossible given the constraint on K)
+  : never
 
-// *every* assignment in this function body should raise an error
-const messUpContact = (contact: DeepReadonly<Contact>): void => {
-  contact.name.firstName = "Ada"
-  contact.name = { firstName: "Ada", lastName: "Loveplaice" }
-  contact.emailAddresses[0] = "ada@seamail.com"
-  contact.emailAddresses = ["ada@seamail.com"]
-  contact.phoneNumbers[0] = 123456789
-  contact.phoneNumbers = [123456789]
+type ObjectIntersection<T extends object, U extends object> = {
+  [K in ???]: At<T, U, K>
 }
 
-// part 3
-type Writeable<T> = T
+const test1: ObjectIntersection<Skiller, Whale> = {
+  id: "ada",
+  name: "Ada",
+  sessionsAttended: 42,
+  species: "orca",
+}
 
-// *no* assignment in this function body should raise an error
-const modifyWriteableContact = (contact: Writeable<DeepReadonly<Contact>>): void => {
-  contact.name.firstName = "Ada"
-  contact.name = { firstName: "Ada", lastName: "Loveplaice" }
-  contact.emailAddresses[0] = "ada@seamail.com"
-  contact.emailAddresses = ["ada@seamail.com"]
-  contact.phoneNumbers[0] = 123456789
-  contact.phoneNumbers = [123456789]
+type ObjectPropertyIntersection<T extends object, U extends object> = {
+  [K in ???]: At<T, U, K>
+}
+
+const test2: ObjectPropertyIntersection<Skiller, Whale> = {
+  id: 1,
+  name: "Ada",
 }
