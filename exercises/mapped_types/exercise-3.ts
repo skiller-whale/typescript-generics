@@ -14,7 +14,7 @@ type Contact = {
 type DeepReadonly<T> = T
 
 // *every* assignment in this function body should raise an error
-const messUpContact = (contact: DeepReadonly<Contact>): void => {
+const modifyReadonlyContact = (contact: DeepReadonly<Contact>): void => {
   contact.name.firstName = "Ada"
   contact.name = { firstName: "Ada", lastName: "Loveplaice" }
   contact.emailAddresses[0] = "ada@seamail.com"
